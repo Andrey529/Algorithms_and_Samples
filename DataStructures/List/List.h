@@ -35,9 +35,12 @@ namespace my {
 
         List &operator=(const List<T> &other) &;
 
-        List &operator=(List<T> &&other) &;
+        List &operator=(List<T> &&other) & noexcept;
 
         bool isEmpty() const;
+
+        void clear();
+
 
         reference front();
 
@@ -99,6 +102,33 @@ namespace my {
     }
 
     template<class T>
+    List<T> &List<T>::operator=(const List<T> &other) &{
+        if (this == &other) {
+            return *this;
+        }
+        if (!isEmpty()) {
+            clear();
+        }
+        copyList(other);
+        return *this;
+    }
+
+    template<class T>
+    List<T> &List<T>::operator=(List<T> &&other) & noexcept {
+        if (this == &other) {
+            return *this;
+        }
+        other.swap(*this);
+        return *this;
+    }
+
+    template<class T>
+    List<T>::~List() {
+        clear();
+        //TODO(check memory leaks)
+    }
+
+    template<class T>
     void List<T>::copyList(const List<T> &other) {
         if (other.size == 0) {
             size = 0;
@@ -128,7 +158,6 @@ namespace my {
         }
     }
 
-
     template<class T>
     void List<T>::swap(List<T> &other) {
         std::swap(begin, other.begin);
@@ -136,10 +165,13 @@ namespace my {
         std::swap(size, other.size);
     }
 
-
+    template<class T>
+    bool List<T>::isEmpty() const {
+        return begin == nullptr;
+    }
 
     template<class T>
-    List<T>::~List() {
+    void List<T>::clear() {
         auto elem = begin;
         while (elem != nullptr) {
             auto tmp = elem;
@@ -147,11 +179,6 @@ namespace my {
             delete tmp;
         }
         //TODO(check memory leaks)
-    }
-
-    template<class T>
-    bool List<T>::isEmpty() const {
-        return begin == nullptr;
     }
 
     template<class T>
