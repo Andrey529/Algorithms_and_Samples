@@ -11,7 +11,7 @@ class ComplexNumber {
 private:
     double real = 0.0;
     double imag = 0.0;
-public:git
+public:
     ComplexNumber() = default;
     ComplexNumber(double real, double imag) : real(real), imag(imag) { }
     ComplexNumber(const ComplexNumber& other) = default;
