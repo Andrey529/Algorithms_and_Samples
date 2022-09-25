@@ -22,7 +22,7 @@ public:
     ComplexNumber& operator=(const ComplexNumber& other) &;
     ComplexNumber& operator=(ComplexNumber&& other) & noexcept;
 private:
-    void swap(ComplexNumber& other) {
+    void swap(ComplexNumber& other) noexcept {
         std::swap(real, other.real);
         std::swap(imag, other.imag);
     }
@@ -40,6 +40,15 @@ public:
     friend bool operator>=(const ComplexNumber& lhs, const ComplexNumber& rhs);
     friend bool operator==(const ComplexNumber& lhs, const ComplexNumber& rhs);
     friend bool operator!=(const ComplexNumber& lhs, const ComplexNumber& rhs);
+
+    // unary arithmetic operators
+    ComplexNumber operator+() const;
+    ComplexNumber operator-() const;
+
+    ComplexNumber& operator++(); // prefix
+    ComplexNumber& operator--();
+    const ComplexNumber operator++(int); // postfix
+    const ComplexNumber operator--(int);
 };
 
 ComplexNumber operator+(const ComplexNumber& lhs, const ComplexNumber& rhs);
@@ -54,15 +63,26 @@ ComplexNumber &ComplexNumber::operator=(const ComplexNumber &other) &{
     ComplexNumber copy = other;
     swap(copy);
     return *this;
+
+//    if (this == std::addressof(other) /* &other */) {
+//        return *this;
+//    }
+//    real = other.real;
+//    imag = other.imag;
+//    return *this;
 }
 
 ComplexNumber &ComplexNumber::operator=(ComplexNumber &&other) & noexcept {
-    if (this == &other) {
-        return *this;
-    }
-    real = other.real; // std::move() not necessary because real is trivially-copyable
-    imag = other.imag; // analogically
+    ComplexNumber copy = std::move(other); // перемещение
+    swap(copy);
     return *this;
+
+//    if (this == std::addressof(other) /* &other */) {
+//        return *this;
+//    }
+//    real = other.real; // std::move() not necessary because real is trivially-copyable
+//    imag = other.imag; // analogically
+//    return *this;
 }
 
 ComplexNumber &ComplexNumber::operator+=(const ComplexNumber &other) {
@@ -134,14 +154,17 @@ bool operator<(const ComplexNumber& lhs, const ComplexNumber& rhs) {
 
 bool operator>(const ComplexNumber &lhs, const ComplexNumber &rhs) {
     return rhs < lhs;
+//    return std::rel_ops::operator>(lhs, rhs);
 }
 
 bool operator<=(const ComplexNumber &lhs, const ComplexNumber &rhs) {
     return !(lhs > rhs);
+//    return std::rel_ops::operator<=(lhs, rhs);
 }
 
 bool operator>=(const ComplexNumber &lhs, const ComplexNumber &rhs) {
     return !(lhs < rhs);
+//    return std::rel_ops::operator>=(lhs, rhs);
 }
 
 bool operator==(const ComplexNumber &lhs, const ComplexNumber &rhs) {
@@ -152,6 +175,43 @@ bool operator==(const ComplexNumber &lhs, const ComplexNumber &rhs) {
 
 bool operator!=(const ComplexNumber &lhs, const ComplexNumber &rhs) {
     return !(lhs == rhs);
+//    return std::rel_ops::operator!=(lhs, rhs);
+}
+
+ComplexNumber ComplexNumber::operator+() const {
+//    return ComplexNumber(real, imag);
+    return {real, imag};
+}
+
+ComplexNumber ComplexNumber::operator-() const {
+//    return ComplexNumber(-real, -imag);
+    return {-real, -imag};
+}
+
+ComplexNumber &ComplexNumber::operator++() {
+    real += 1;
+    imag += 1;
+    return *this;
+}
+
+ComplexNumber &ComplexNumber::operator--() {
+    real -= 1;
+    imag -= 1;
+    return *this;
+}
+
+// overloading with the ++ prefix operator
+const ComplexNumber ComplexNumber::operator++(int) {
+    ComplexNumber comp(*this);
+    ++*this;
+    return comp;
+}
+
+// overloading with the -- prefix operator
+const ComplexNumber ComplexNumber::operator--(int) {
+    ComplexNumber comp(*this);
+    --*this;
+    return comp;
 }
 
 
