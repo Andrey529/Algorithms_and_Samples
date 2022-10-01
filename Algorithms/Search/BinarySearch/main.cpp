@@ -9,7 +9,7 @@ using SizeType = typename Collection::size_type;
 
 // O(logN)
 template<typename Collection>
-int binarySearch(const Collection& collection, const ValType<Collection>& value) {
+int binarySearch(const Collection& collection, const ValType<Collection>& value) noexcept {
     SizeType<Collection> begin = 0u;
     SizeType<Collection> end = collection.size() - 1;
     SizeType<Collection> mid = end / 2;
