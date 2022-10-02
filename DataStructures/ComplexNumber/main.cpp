@@ -13,5 +13,8 @@ int main() {
     const ComplexNumber constComp(1, 1);
     std::cout << -constComp << std::endl;
 
+    ComplexNumber comp3;
+    std::cin >> comp3;
+    std::cout << comp3 << std::endl;
     return 0;
 }

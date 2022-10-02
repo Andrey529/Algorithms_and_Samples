@@ -27,19 +27,20 @@ private:
         std::swap(imag, other.imag);
     }
 public:
+    double& getReal() { return real; }
+    const double& getReal() const { return real; }
+    void setReal(const double &re) { real = re; }
+
+    double& getImag() { return imag; }
+    const double& getImag() const { return imag; }
+    void setImag(const double &im) { imag = im; }
+
     ComplexNumber& operator+=(const ComplexNumber& other);
     ComplexNumber& operator-=(const ComplexNumber& other);
     ComplexNumber& operator*=(const ComplexNumber& other);
     ComplexNumber& operator/=(const ComplexNumber& other);
     friend std::ostream& operator<<(std::ostream& ostream, const ComplexNumber& complexNumber);
-
-    // modulo comparison
-    friend bool operator<(const ComplexNumber& lhs, const ComplexNumber& rhs);
-    friend bool operator>(const ComplexNumber& lhs, const ComplexNumber& rhs);
-    friend bool operator<=(const ComplexNumber& lhs, const ComplexNumber& rhs);
-    friend bool operator>=(const ComplexNumber& lhs, const ComplexNumber& rhs);
-    friend bool operator==(const ComplexNumber& lhs, const ComplexNumber& rhs);
-    friend bool operator!=(const ComplexNumber& lhs, const ComplexNumber& rhs);
+    friend std::istream& operator>>(std::istream& istream, ComplexNumber& complexNumber);
 
     // unary arithmetic operators
     ComplexNumber operator+() const;
@@ -56,6 +57,13 @@ ComplexNumber operator-(const ComplexNumber& lhs, const ComplexNumber& rhs);
 ComplexNumber operator*(const ComplexNumber& lhs, const ComplexNumber& rhs);
 ComplexNumber operator/(const ComplexNumber& lhs, const ComplexNumber& rhs);
 
+// modulo comparison
+bool operator<(const ComplexNumber& lhs, const ComplexNumber& rhs);
+bool operator>(const ComplexNumber& lhs, const ComplexNumber& rhs);
+bool operator<=(const ComplexNumber& lhs, const ComplexNumber& rhs);
+bool operator>=(const ComplexNumber& lhs, const ComplexNumber& rhs);
+bool operator==(const ComplexNumber& lhs, const ComplexNumber& rhs);
+bool operator!=(const ComplexNumber& lhs, const ComplexNumber& rhs);
 
 
 // copy and swap idiom
@@ -146,9 +154,14 @@ std::ostream& operator<<(std::ostream& ostream, const ComplexNumber& complexNumb
     return ostream;
 }
 
+std::istream &operator>>(std::istream &istream, ComplexNumber &complexNumber) {
+    istream >> complexNumber.real >> complexNumber.imag;
+    return istream;
+}
+
 bool operator<(const ComplexNumber& lhs, const ComplexNumber& rhs) {
-    double modulLhs = sqrt(pow(lhs.real, 2) + pow(lhs.imag, 2));
-    double modulRhs = sqrt(pow(rhs.real, 2) + pow(rhs.imag, 2));
+    double modulLhs = sqrt(pow(lhs.getReal(), 2) + pow(lhs.getImag(), 2));
+    double modulRhs = sqrt(pow(rhs.getReal(), 2) + pow(rhs.getImag(), 2));
     return modulLhs < modulRhs;
 }
 
@@ -168,8 +181,8 @@ bool operator>=(const ComplexNumber &lhs, const ComplexNumber &rhs) {
 }
 
 bool operator==(const ComplexNumber &lhs, const ComplexNumber &rhs) {
-    double modulLhs = sqrt(pow(lhs.real, 2) + pow(lhs.imag, 2));
-    double modulRhs = sqrt(pow(rhs.real, 2) + pow(rhs.imag, 2));
+    double modulLhs = sqrt(pow(lhs.getReal(), 2) + pow(lhs.getImag(), 2));
+    double modulRhs = sqrt(pow(rhs.getReal(), 2) + pow(rhs.getImag(), 2));
     return modulLhs == modulRhs;
 }
 
