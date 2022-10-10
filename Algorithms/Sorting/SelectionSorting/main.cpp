@@ -1,8 +1,9 @@
 #include <iostream>
 #include <vector>
 
-template<typename Collection, typename Comparator, typename = typename Collection::iterator>
-void selectionSorting(Collection& collection, Comparator comparator) noexcept {
+// O(N)
+template<typename Collection, typename Comparator = std::less<>>
+void selectionSorting(Collection& collection, Comparator comparator = Comparator{}) noexcept {
     for (typename Collection::size_type i = 0; i < collection.size() - 1; ++i) {
         typename Collection::size_type keyElementIndex = i;
         for (typename Collection::size_type j = i + 1; j < collection.size(); ++j) {
