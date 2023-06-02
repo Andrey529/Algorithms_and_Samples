@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 
-// O(N)
+// O(N^2)
 template<typename Collection, typename Comparator = std::less<>>
 void selectionSorting(Collection& collection, Comparator comparator = Comparator{}) noexcept {
     for (typename Collection::size_type i = 0; i < collection.size() - 1; ++i) {

@@ -10,6 +10,8 @@ using SizeType = typename Collection::size_type;
 //    QuickSorting(collection, /*somehow get start and end indexes from iterators*/ 0, collection.size() - 1, comparator);
 //}
 
+
+// O(N * log_2 N)
 template<typename Collection, typename Comparator = std::less<>>
 void QuickSorting(Collection& collection, const SizeType<Collection>& left,
                   const SizeType<Collection>& right, Comparator comparator = Comparator{}) noexcept {
